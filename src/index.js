@@ -8,41 +8,44 @@ axios.defaults.headers.common['key'] = '38926821-b8c8002029c81a405b7f36852';
 const BASE_URL = 'https://pixabay.com/api/';
 
 const refs = {
-  searchForm: document.querySelector('#searchForm'),
-  inputSearch: document.querySelector('searchQuery'),
+  formSearch: document.querySelector('#search-form'),
+  inputSearch: document.querySelector('#searchQuery'),
   btnSearch: document.querySelector('#btnSearch'),
 };
 
-export function fetchPhoto(searchQuery) {
+export function fetchPhoto(searchQuery, page) {
   // key - твій унікальний ключ доступу до API.
   // q - термін для пошуку. Те, що буде вводити користувач.
   // image_type - тип зображення. На потрібні тільки фотографії, тому постав значення photo.
   // orientation - орієнтація фотографії. Постав значення horizontal.
   // safesearch - фільтр за віком.Постав значення true.
 
-  const params = new URLSearchParams({
-    image_type: photo,
-    orientation: horizontal,
+  axios.defaults.params = {
+    q: encodeURIComponent(searchQuery),
+    image_type: 'photo',
+    orientation: 'horizontal',
     safesearch: true,
-  });
+    per_page: 40,
+    page: page,
+  };
 
-  return axios.get(
-    `${BASE_URL}?q=${encodeURIComponent(searchQuery)}&${params}`
-  );
+  return axios.get(BASE_URL);
 }
 
-refs.btnSearch.addEventListener('click', () => {
-  const searchStr = refs.inputSearch;
+refs.formSearch.addEventListener('submit', event => {
+  event.preventDefault();
+  console.log('inputSearch', refs.inputSearch);
+  const searchStr = refs.inputSearch.value;
   console.log('search', searchStr);
-//   fetchPhoto(searchStr)
-//     .then(({ data }) => {
-//       console.log('data', data);
-//     })
-//     .catch(err => {
-//       hideLoader();
-//       showError();
-//       console.log(err.message);
-//     });
+  //   fetchPhoto(searchStr)
+  //     .then(({ data }) => {
+  //       console.log('data', data);
+  //     })
+  //     .catch(err => {
+  //       hideLoader();
+  //       showError();
+  //       console.log(err.message);
+  //     });
   //console.log('element', index);
 });
 
