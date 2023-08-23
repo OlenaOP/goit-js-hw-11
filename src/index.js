@@ -26,6 +26,7 @@ const refs = {
 };
 
 let page = 1;
+let galleryItem;
 
 function fetchPhoto(searchQuery, page) {
   // key - твій унікальний ключ доступу до API.
@@ -63,7 +64,7 @@ refs.formSearch.addEventListener('submit', async event => {
       refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
       refs.btnLoadMore.classList.remove('hidden');
 
-      let galleryItem = new SimpleLightbox('.gallery a', {
+      galleryItem = new SimpleLightbox('.gallery a', {
         captionsData: 'alt',
         captionDelay: 250,
       });
@@ -97,10 +98,7 @@ refs.btnLoadMore.addEventListener('click', async () => {
     if (page <= Math.ceil(data.total / 40)) {
       refs.gallery.insertAdjacentHTML('beforeend', createMarkup(data.hits));
 
-      let galleryItem = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionDelay: 250,
-      });
+      galleryItem.refresh();
 
       // const { height: cardHeight } = document
       //   .querySelector('.gallery')
